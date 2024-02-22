@@ -8,6 +8,7 @@ pdfjsLib.GlobalWorkerOptions.workerPort = new pdfjsWorker();
 
 function App() {
   const [hasFileBeenSelected, setHasFileBeenSelected] = useState(false);
+  const [text, setText] = useState<string>("");
 
   function readArrayBufferFromFile(file: File) {
     const reader = new FileReader();
@@ -33,11 +34,12 @@ function App() {
                   console.log(textItem.str);
                   return textItem.str;
                 });
-              })
+              }),
             );
           }
           const texts = await Promise.all(countPromises);
           console.log(texts);
+          setText(texts.flat(2).join("\n"));
         });
       }
     };
@@ -51,7 +53,8 @@ function App() {
 
   return hasFileBeenSelected ? (
     <>
-      <p>Worked!</p>
+      <p>Worked! Here's the text:</p>
+      <p>{text}</p>
     </>
   ) : (
     <>
